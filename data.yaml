@@ -1,0 +1,5 @@
+names:
+- pothole
+nc: 1
+train: C:\Users\vaibh\Desktop\Aish\train
+val: C:\Users\vaibh\Desktop\Aish\valid

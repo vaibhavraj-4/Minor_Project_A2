@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Road Damage Detection</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        text-align: center;
+        background-color: #f4f4f4;
+      }
+      .container {
+        margin-top: 50px;
+      }
+      video {
+        width: 80%;
+        height: auto;
+      }
+      input[type="file"] {
+        margin-top: 20px;
+      }
+      button {
+        margin-top: 20px;
+        padding: 10px 20px;
+        font-size: 16px;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Road Damage Detection</h1>
+      <form id="upload-form">
+        <input type="file" id="video-input" accept="video/*" required />
+        <button type="submit">Upload and Process Video</button>
+      </form>
+
+      <div>
+        <h2>Processed Video</h2>
+        <video id="processed-video" controls></video>
+      </div>
+    </div>
+
+    <script>
+      document
+        .getElementById("upload-form")
+        .addEventListener("submit", async function (event) {
+          event.preventDefault();
+          const videoInput = document.getElementById("video-input");
+          const formData = new FormData();
+          formData.append("video", videoInput.files[0]);
+
+          const response = await fetch("/upload", {
+            method: "POST",
+            body: formData,
+          });
+
+          if (response.ok) {
+            const data = await response.json();
+            const videoElement = document.getElementById("processed-video"); // Corrected ID
+            videoElement.src =
+              "/processed/" + data.processed_video.split("/").pop();
+            videoElement.load(); // Ensure the video reloads after setting the source
+          } else {
+            alert("Error processing video.");
+          }
+        });
+    </script>
+  </body>
+</html>
